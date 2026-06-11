@@ -10,11 +10,16 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import TYPE_CHECKING
 
-from flameforge.config import DataConfig, TrainingConfig
+from flameforge.config import DataConfig, RunConfig, TrainingConfig
 from flameforge.constants import ExportFormat, FineTuningMethod
 from flameforge.device.detector import DeviceInfo
 from flameforge.models.registry import ModelInfo
+from flameforge.utils.errors import ConfigurationError
+
+if TYPE_CHECKING:
+    from flameforge.training.base import TrainingResult
 
 
 @dataclass
@@ -46,6 +51,7 @@ class SessionState:
     chat_template: str | None = None
     export_formats: list[ExportFormat] = field(default_factory=lambda: [ExportFormat.ADAPTER])
     output_dir: Path = field(default_factory=lambda: Path("./flameforge-output"))
+    training_result: TrainingResult | None = None
 
     def reset_downstream_of_model(self) -> None:
         """Clear choices that depend on the model when the model changes."""
@@ -56,3 +62,27 @@ class SessionState:
     def model_param_count(self) -> int | None:
         """Parameter count of the selected model, if known from the registry."""
         return self.model_info.param_count if self.model_info else None
+
+    def build_run_config(self) -> RunConfig:
+        """Assemble a validated :class:`RunConfig` from the chosen fields.
+
+        Returns:
+            The fully populated run configuration.
+
+        Raises:
+            ConfigurationError: If a required selection (model/method/data) is
+                missing — a programming error, since navigation enforces order.
+        """
+        if self.model_id is None or self.method is None or self.data is None:
+            raise ConfigurationError(
+                message="Cannot start training before a model, method, and data are chosen.",
+                suggestions=["Complete the earlier steps first."],
+            )
+        return RunConfig(
+            model_id=self.model_id,
+            method=self.method,
+            data=self.data,
+            training=self.training,
+            chat_template=self.chat_template,
+            export_formats=self.export_formats,
+        )
