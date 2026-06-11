@@ -69,8 +69,15 @@ class _FakeApi:
         return object()
 
 
+def _make_error(cls: type[Exception]) -> Exception:
+    """Instantiate a HuggingFace Hub error without invoking its (version-varying)
+    ``__init__``, whose required arguments differ across huggingface_hub releases.
+    """
+    return cls.__new__(cls)
+
+
 def test_ensure_access_gated_maps_to_auth_error(monkeypatch: pytest.MonkeyPatch) -> None:
-    err = GatedRepoError("gated")
+    err = _make_error(GatedRepoError)
     monkeypatch.setattr(hf, "HfApi", lambda **kw: _FakeApi(err))
     with pytest.raises(AuthenticationError) as exc:
         hf.ensure_model_access("meta-llama/Llama-3.1-8B-Instruct", token="hf_x")
@@ -78,14 +85,14 @@ def test_ensure_access_gated_maps_to_auth_error(monkeypatch: pytest.MonkeyPatch)
 
 
 def test_ensure_access_missing_with_token_maps_to_not_found(monkeypatch: pytest.MonkeyPatch) -> None:
-    err = RepositoryNotFoundError("404")
+    err = _make_error(RepositoryNotFoundError)
     monkeypatch.setattr(hf, "HfApi", lambda **kw: _FakeApi(err))
     with pytest.raises(ModelNotFoundError):
         hf.ensure_model_access("nope/model", token="hf_x")
 
 
 def test_ensure_access_missing_without_token_suggests_auth(monkeypatch: pytest.MonkeyPatch) -> None:
-    err = RepositoryNotFoundError("404")
+    err = _make_error(RepositoryNotFoundError)
     monkeypatch.setattr(hf, "HfApi", lambda **kw: _FakeApi(err))
     monkeypatch.setattr(hf, "find_hf_token", lambda: None)
     with pytest.raises(AuthenticationError):
