@@ -137,9 +137,16 @@ flameforge --config my_config.yaml      # see configs/default.yaml for the schem
 Other flags:
 ```bash
 flameforge --model meta-llama/Llama-3.2-3B-Instruct   # pre-select a model
-flameforge --max-memory-gb 14                          # cap the memory budget
+flameforge --max-memory-gb 14                          # set the memory budget to use
 flameforge --version
 ```
+
+**Memory budget.** On the welcome screen you can set the memory budget FlameForge
+is allowed to use — lower it to be safe, or raise it above the conservative
+default if you know what you're doing. This matters most on Apple Silicon, where
+GPU memory is shared with macOS: the default leaves headroom so your machine
+stays responsive, and raising it past that default is flagged as risky. The same
+value can be passed up front with `--max-memory-gb`.
 
 Authentication is read from `HF_TOKEN` / `HUGGING_FACE_HUB_TOKEN` or
 `~/.cache/huggingface/token` (e.g. after `huggingface-cli login`).

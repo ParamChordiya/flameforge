@@ -92,6 +92,19 @@ Button.-primary {
     margin-top: 1;
 }
 
+#mem-row {
+    height: auto;
+    margin: 1 0 0 0;
+}
+
+#mem-budget {
+    width: 16;
+}
+
+#mem-status {
+    height: auto;
+}
+
 /* ---- Data loading screen --------------------------------------------- */
 
 #data-root {

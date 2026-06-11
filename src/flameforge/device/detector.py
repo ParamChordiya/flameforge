@@ -158,6 +158,20 @@ def _with_budget(info: DeviceInfo, budget: float) -> DeviceInfo:
     )
 
 
+def with_memory_cap(device: DeviceInfo, cap_gb: float | None) -> DeviceInfo:
+    """Return a copy of ``device`` with its budget recomputed for a user cap.
+
+    Args:
+        device: The device to adjust.
+        cap_gb: The user-chosen memory budget in GB, or None to reset to the
+            conservative default.
+
+    Returns:
+        A new :class:`DeviceInfo` with the updated ``memory_budget_gb``.
+    """
+    return _with_budget(device, calculate_memory_budget(device, cap_gb))
+
+
 def detect_device(user_cap_gb: float | None = None) -> DeviceInfo:
     """Detect the best available compute device.
 

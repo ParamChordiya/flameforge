@@ -37,25 +37,59 @@ class _DeviceLike(Protocol):
     def total_memory_gb(self) -> float: ...
 
 
-def calculate_memory_budget(device: _DeviceLike, user_cap_gb: float | None = None) -> float:
-    """Compute a safe training memory budget for a device.
+def safe_budget_fraction(device: _DeviceLike) -> float:
+    """Return the conservative budget fraction for a device type.
 
-    CUDA VRAM is dedicated, so we allow 90%. Apple Silicon unified memory must
-    leave room for macOS, so we allow only 70%. CPU RAM is capped at 50%.
+    CUDA VRAM is dedicated (90%); Apple Silicon unified memory must leave room
+    for macOS (70%); CPU RAM is capped at 50%.
+
+    Args:
+        device: An object exposing ``device_type``.
+
+    Returns:
+        The safe fraction of total memory to use for training.
+    """
+    return MEMORY_BUDGET_FRACTION.get(device.device_type, 0.5)
+
+
+def default_memory_budget(device: _DeviceLike) -> float:
+    """Return the conservative default budget (the safe fraction of total)."""
+    return round(device.total_memory_gb * safe_budget_fraction(device), 2)
+
+
+def calculate_memory_budget(device: _DeviceLike, user_cap_gb: float | None = None) -> float:
+    """Compute the training memory budget for a device.
+
+    With no user value, returns the conservative default (the safe fraction of
+    total memory). When the user explicitly chooses a budget, that value is used
+    directly — it may lower the budget for extra safety, or raise it above the
+    default (riskier; the UI/CLI warns about this). The budget never exceeds the
+    device's total physical memory.
 
     Args:
         device: An object exposing ``device_type`` and ``total_memory_gb``.
-        user_cap_gb: Optional user-specified hard cap, in GB. The returned budget
-            never exceeds this value.
+        user_cap_gb: Optional user-chosen budget, in GB.
 
     Returns:
         The training memory budget in gigabytes.
     """
-    fraction = MEMORY_BUDGET_FRACTION.get(device.device_type, 0.5)
-    budget = device.total_memory_gb * fraction
-    if user_cap_gb is not None:
-        budget = min(budget, user_cap_gb)
-    return round(budget, 2)
+    if user_cap_gb is None:
+        return default_memory_budget(device)
+    budget = min(user_cap_gb, device.total_memory_gb)
+    return round(max(0.0, budget), 2)
+
+
+def exceeds_safe_budget(device: _DeviceLike, budget_gb: float) -> bool:
+    """Return whether ``budget_gb`` is above the conservative safe default.
+
+    Args:
+        device: The device the budget is for.
+        budget_gb: The proposed budget.
+
+    Returns:
+        True if the budget exceeds the safe fraction of total memory (risky).
+    """
+    return budget_gb > default_memory_budget(device) + 1e-6
 
 
 def estimate_model_memory_gb(param_count: int, method: FineTuningMethod | str, dtype: str = "bfloat16") -> float:
@@ -115,7 +149,7 @@ def current_process_memory_gb() -> float:
         Resident set size (RSS) in GB. Used as a portable fallback when backend
         specific memory counters are unavailable.
     """
-    return psutil.Process().memory_info().rss / 1e9
+    return float(psutil.Process().memory_info().rss) / 1e9
 
 
 def system_memory_used_fraction() -> float:
@@ -125,4 +159,4 @@ def system_memory_used_fraction() -> float:
         A value in [0, 1]; on Apple Silicon this is a good proxy for unified
         memory pressure.
     """
-    return psutil.virtual_memory().percent / 100.0
+    return float(psutil.virtual_memory().percent) / 100.0

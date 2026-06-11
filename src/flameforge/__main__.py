@@ -32,7 +32,8 @@ def run(
     max_memory_gb: float | None = typer.Option(
         None,
         "--max-memory-gb",
-        help="Hard cap on the training memory budget, in GB (risky if set high).",
+        help="Memory budget to use, in GB. Lowers it for safety, or raises above "
+        "the conservative default (risky). You can also set this on the welcome screen.",
         min=0.5,
     ),
     model: str | None = typer.Option(
