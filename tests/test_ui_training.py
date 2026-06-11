@@ -56,7 +56,7 @@ async def test_config_screen_rejects_bad_value(alpaca_file: Path) -> None:
         await pilot.pause()
         # Stays on the config screen and shows an error.
         assert type(app.screen).__name__ == "ConfigEditScreen"
-        assert "✗" in error_widget.render()
+        assert "✗" in str(error_widget.render())
 
 
 @pytest.mark.asyncio
