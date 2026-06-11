@@ -91,3 +91,55 @@ Button.-primary {
     text-style: bold;
     margin-top: 1;
 }
+
+/* ---- Data loading screen --------------------------------------------- */
+
+#data-root {
+    padding: 1 2;
+    height: 1fr;
+}
+
+#data-input-row {
+    height: auto;
+    margin: 1 0;
+}
+
+#data-path {
+    width: 1fr;
+}
+
+#load-status {
+    margin: 0 0 1 0;
+}
+
+#data-results {
+    height: auto;
+}
+
+#format-badge {
+    margin-top: 1;
+}
+
+#validation-report {
+    border: round $success;
+}
+
+#data-actions {
+    height: auto;
+    margin-top: 1;
+}
+
+#preview-header {
+    margin-top: 1;
+}
+
+#preview-body {
+    height: auto;
+    max-height: 18;
+    border: round $secondary;
+    background: $panel;
+}
+
+#preview-nav {
+    height: auto;
+}
