@@ -1,0 +1,9 @@
+FlameForge makes fine-tuning approachable. Instead of editing brittle YAML files and memorizing CUDA flags, you launch a terminal interface, pick a model, and load your data.
+
+Continued pre-training adapts a base model to a new domain or writing style. Provide a corpus of raw text — documentation, transcripts, or notes — and the model learns the vocabulary and cadence of that domain.
+
+Large language models are trained to predict the next token in a sequence. By exposing them to in-domain text, the distribution of likely continuations shifts toward your domain, improving downstream performance.
+
+Memory safety matters on laptops. On Apple Silicon the GPU shares unified memory with the operating system, so a runaway allocation can freeze the whole machine. FlameForge budgets memory conservatively and monitors usage during training.
+
+A short document can be a single paragraph. Documents are separated by blank lines, so this corpus contains several independent passages that the tokenizer will pack into training sequences.

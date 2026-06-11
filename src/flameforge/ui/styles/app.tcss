@@ -1,0 +1,93 @@
+/* FlameForge global stylesheet.
+ *
+ * One file owns all styling so screens stay visually consistent. Sections are
+ * grouped by screen; shared component styles live at the top. Colors use
+ * Textual's built-in theme variables so the app respects light/dark themes.
+ */
+
+/* ---- Shared ---------------------------------------------------------- */
+
+Screen {
+    background: $surface;
+    color: $text;
+}
+
+.title {
+    text-style: bold;
+    color: $accent;
+}
+
+.subtitle {
+    color: $text-muted;
+}
+
+.panel {
+    border: round $primary;
+    padding: 1 2;
+    margin: 1 0;
+}
+
+.hint {
+    color: $text-muted;
+    text-style: italic;
+}
+
+.ok {
+    color: $success;
+}
+
+.warn {
+    color: $warning;
+}
+
+.error {
+    color: $error;
+}
+
+Button {
+    margin: 0 1;
+}
+
+Button.-primary {
+    background: $primary;
+}
+
+/* ---- Welcome screen -------------------------------------------------- */
+
+#welcome-root {
+    align: center middle;
+    height: 1fr;
+}
+
+#welcome-card {
+    width: 80;
+    max-width: 90%;
+    border: round $primary;
+    padding: 1 3;
+    background: $panel;
+}
+
+#logo {
+    color: $accent;
+    text-style: bold;
+    content-align: center top;
+    margin-bottom: 1;
+}
+
+#device-info {
+    border: round $secondary;
+    padding: 1 2;
+    margin: 1 0;
+}
+
+#welcome-buttons {
+    align-horizontal: center;
+    height: auto;
+    margin-top: 1;
+}
+
+#cpu-warning {
+    color: $warning;
+    text-style: bold;
+    margin-top: 1;
+}

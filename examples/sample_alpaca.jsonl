@@ -1,0 +1,20 @@
+{"instruction": "Summarize the following text in one sentence.", "input": "The mitochondria is the powerhouse of the cell, producing ATP through cellular respiration.", "output": "Mitochondria generate the cell's energy (ATP) via respiration."}
+{"instruction": "Translate to French.", "input": "Good morning, how are you?", "output": "Bonjour, comment allez-vous ?"}
+{"instruction": "What is the capital of Japan?", "input": "", "output": "The capital of Japan is Tokyo."}
+{"instruction": "Convert this temperature to Celsius.", "input": "98.6 degrees Fahrenheit", "output": "98.6\u00b0F is 37\u00b0C."}
+{"instruction": "Write a haiku about autumn.", "input": "", "output": "Crisp leaves drift downward,\nthe air turns cool and golden\u2014\nautumn whispers low."}
+{"instruction": "Explain what an API is in simple terms.", "input": "", "output": "An API is a set of rules that lets two programs talk to each other, like a waiter taking your order to the kitchen."}
+{"instruction": "Fix the grammar in this sentence.", "input": "She don't like apples.", "output": "She doesn't like apples."}
+{"instruction": "List three primary colors.", "input": "", "output": "Red, blue, and yellow."}
+{"instruction": "Give a synonym for 'happy'.", "input": "", "output": "Joyful."}
+{"instruction": "Classify the sentiment.", "input": "I absolutely loved this movie, it was fantastic!", "output": "Positive"}
+{"instruction": "What is 15 multiplied by 12?", "input": "", "output": "15 \u00d7 12 = 180."}
+{"instruction": "Rewrite this to be more polite.", "input": "Send me the report now.", "output": "Could you please send me the report when you have a moment?"}
+{"instruction": "Name the largest planet in our solar system.", "input": "", "output": "Jupiter is the largest planet in our solar system."}
+{"instruction": "Summarize the plot in one line.", "input": "A young wizard discovers his heritage and battles a dark lord across seven years of schooling.", "output": "A boy wizard comes of age while fighting an evil sorcerer."}
+{"instruction": "Convert this list to a comma-separated string.", "input": "apple\nbanana\ncherry", "output": "apple, banana, cherry"}
+{"instruction": "Explain photosynthesis to a five-year-old.", "input": "", "output": "Plants eat sunlight! They use light, water, and air to make their own food and grow big."}
+{"instruction": "What does HTTP stand for?", "input": "", "output": "HyperText Transfer Protocol."}
+{"instruction": "Suggest a healthy breakfast.", "input": "", "output": "Greek yogurt with berries and a handful of granola is a healthy, balanced breakfast."}
+{"instruction": "Identify the verb in this sentence.", "input": "The cat sleeps on the warm windowsill.", "output": "The verb is 'sleeps'."}
+{"instruction": "Give the past tense of 'run'.", "input": "", "output": "The past tense of 'run' is 'ran'."}

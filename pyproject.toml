@@ -1,0 +1,92 @@
+[project]
+name = "flameforge"
+version = "0.1.0"
+description = "Fine-tune any LLM with a beautiful TUI. Zero config, maximum power."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [{ name = "Param" }]
+keywords = ["llm", "fine-tuning", "lora", "qlora", "tui", "machine-learning", "mlx", "cuda"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    "textual>=0.80.0",
+    "pydantic>=2.0",
+    "pyyaml>=6.0",
+    "huggingface-hub>=0.20",
+    "tokenizers>=0.15",
+    "rich>=13.0",
+    "typer>=0.9",
+    "safetensors>=0.4",
+    "psutil>=5.9",
+]
+
+[project.optional-dependencies]
+cuda = [
+    "torch>=2.1",
+    "transformers>=4.40",
+    "peft>=0.12",
+    "trl>=0.9",
+    "bitsandbytes>=0.43",
+    "accelerate>=0.30",
+    "datasets>=2.18",
+    "flash-attn>=2.5; platform_system != 'Darwin'",
+]
+mlx = [
+    "mlx>=0.16",
+    "mlx-lm>=0.18",
+    "transformers>=4.40",
+]
+all = ["flameforge[cuda,mlx]"]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "ruff>=0.4",
+    "mypy>=1.10",
+    "types-pyyaml>=6.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/parampatil/flameforge"
+Repository = "https://github.com/parampatil/flameforge"
+Issues = "https://github.com/parampatil/flameforge/issues"
+
+[project.scripts]
+flameforge = "flameforge.__main__:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/flameforge"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
+mypy_path = "src"
+packages = ["flameforge"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
